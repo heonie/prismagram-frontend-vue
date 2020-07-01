@@ -3,7 +3,8 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import VueApollo from 'vue-apollo'
-import apolloClient from "./apolloClient";
+import apolloClient from "./apollo/Client";
+import 'normalize.css/normalize.css';
 
 Vue.config.productionTip = false
 
