@@ -1,13 +1,29 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
+    <Header v-if="isLoggedIn"></Header>
     <router-view/>
   </div>
 </template>
+<script>
+  import gql from 'graphql-tag'
+  const QUERY = gql`
+      {
+          isLoggedIn @client
+      }
+  `;
 
+  export default {
+    name: "App",
+    data() {
+      return {
+        isLoggedIn: false
+      }
+    },
+    apollo: {
+      isLoggedIn: QUERY
+    }
+  }
+</script>
 <style lang="scss">
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
