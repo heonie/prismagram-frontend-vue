@@ -1,10 +1,17 @@
 <template>
-  <div id="app">
-    <Header v-if="isLoggedIn"></Header>
-    <router-view/>
-  </div>
+  <ThemeProvider :theme="theme">
+    <div id="app">
+        <Header v-if="isLoggedIn"></Header>
+        <router-view/>
+        <Footer></Footer>
+    </div>
+  </ThemeProvider>
 </template>
 <script>
+  import Footer from "./components/Footer";
+  import Header from "./components/Header";
+  import theme from "./styles/theme";
+  import {ThemeProvider} from "vue-styled-components";
   import gql from 'graphql-tag'
   const QUERY = gql`
       {
@@ -14,8 +21,14 @@
 
   export default {
     name: "App",
+    components: {
+      ThemeProvider,
+      Footer,
+      Header
+    },
     data() {
       return {
+        theme,
         isLoggedIn: false
       }
     },
@@ -25,24 +38,26 @@
   }
 </script>
 <style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap');
+$bgColor: #FAFAFA;
+$blackColor: #262626;
+$blueColor: #3897f0;
+
+* {
+  box-sizing:border-box;
 }
-
-#nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
+body {
+  background-color: $bgColor;
+  color: $blackColor;
+  font-size:14px;
+  font-family: 'Open Sans', sans-serif !important;
+  padding-top: 140px;
+}
+a {
+    color:$blueColor;
+    text-decoration:none;
+}
+input:focus{
+    outline:none;
 }
 </style>

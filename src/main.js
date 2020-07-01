@@ -4,7 +4,7 @@ import router from './router'
 import store from './store'
 import VueApollo from 'vue-apollo'
 import apolloClient from "./apollo/Client";
-import 'normalize.css/normalize.css';
+import 'reset-css';
 
 Vue.config.productionTip = false
 
