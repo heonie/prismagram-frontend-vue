@@ -47,7 +47,7 @@ export default {
 
 <style scoped lang="scss">
 @import '../styles/themes';
-@use "sass:map";
+
 footer {
     display: flex;
     justify-content: space-between;
@@ -66,9 +66,9 @@ li:not(:last-child) {
 }
 
 a {
-    color: map-get($themes, "darkBlueColor");
+    color: theme("darkBlueColor");
 }
 span {
-    color: map-get($themes, "darkGreyColor");
+    color: theme("darkGreyColor");
 }
 </style>
