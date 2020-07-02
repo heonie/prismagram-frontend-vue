@@ -3,14 +3,14 @@
         <div class="box form">
             <div v-if="action === 'logIn'">
                 <VueHeadful title="Log In | Prismagram" />
-                <form @submit="onSubmit">
+                <form @submit="onSubmitLogIn">
                     <Input placeholder="Email" v-model="email" type="email" />
                     <Button text="Log in" />
                 </form>
             </div>
             <div v-if="action === 'signUp'">
                 <VueHeadful title="Sign Up | Prismagram" />
-                <form @submit="onSubmit">
+                <form @submit="onSubmitSignUp">
                     <Input placeholder="First name" v-model="firstName" />
                     <Input placeholder="Last name" v-model="lastName" />
                     <Input placeholder="Email" v-model="email" type="email" />
@@ -20,8 +20,8 @@
             </div>
             <div v-if="action === 'confirm'">
                 <VueHeadful title="Confirm Secret | Prismagram" />
-                <form @submit="onSubmit">
-                    <Input placeholder="Paste your secret" :required="true" :value="secret" />
+                <form @submit="onSubmitConfirm">
+                    <Input placeholder="Paste your secret" required :value="secret" />
                     <Button text="Confirm" />
                 </form>
             </div>
@@ -50,16 +50,45 @@
             Input,
             VueHeadful
         },
+        data: () => ({
+            email: "heonie@gmail.com",
+            username: "",
+            firstName: "",
+            lastName: "",
+            secret: ""
+        }),
         props: [
             "action",
-            "username",
-            "firstName",
-            "lastName",
-            "email",
             "setAction",
-            "onSubmit",
-            "secret"
-        ]
+            "onSubmit"
+        ],
+        methods: {
+            onSubmitLogIn(e) {
+                e.preventDefault();
+                this.$emit('submit', e, {
+                    action: this.action,
+                    email: this.email
+                });
+            },
+            onSubmitSignUp(e) {
+                e.preventDefault();
+                this.$emit('submit', e, {
+                    action: this.action,
+                    email: this.email,
+                    username: this.username,
+                    firstName: this.firstName,
+                    lastName: this.lastName
+                });
+            },
+            onSubmitConfirm(e) {
+                e.preventDefault();
+                this.$emit('submit', e, {
+                    action: this.action,
+                    email: this.email,
+                    secret: this.secret
+                });
+            }
+        }
     }
 </script>
 

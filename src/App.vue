@@ -6,6 +6,7 @@
             <router-view/>
             <Footer></Footer>
         </div>
+        <notifications position="bottom left"/>
     </div>
   </ThemeProvider>
 </template>

@@ -1,7 +1,6 @@
 <template>
     <input
         :placeholder="placeholder"
-        :required="required"
         :value="value"
         :type="type"
         :onChange="onChange"
@@ -15,10 +14,6 @@
             placeholder: {
                 type: String,
                 required: true
-            },
-            required: {
-                type: Boolean,
-                default: true
             },
             value: {
                 type: String,

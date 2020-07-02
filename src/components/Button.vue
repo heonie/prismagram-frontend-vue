@@ -1,5 +1,5 @@
 <template>
-    <button @click="onClick">{{text}}</button>
+    <button>{{text}}</button>
 </template>
 
 <script>
@@ -9,10 +9,6 @@
             text: {
                 type: String,
                 required: true
-            },
-            onClick: {
-                type: Function,
-                default: () => null
             }
         },
         method: {
