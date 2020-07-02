@@ -2,8 +2,10 @@
   <ThemeProvider :theme="theme">
     <div id="app">
         <Header v-if="isLoggedIn"></Header>
-        <router-view/>
-        <Footer></Footer>
+        <div class="wrapper">
+            <router-view/>
+            <Footer></Footer>
+        </div>
     </div>
   </ThemeProvider>
 </template>
@@ -38,26 +40,32 @@
   }
 </script>
 <style lang="scss">
+@import './styles/themes';
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap');
-$bgColor: #FAFAFA;
-$blackColor: #262626;
-$blueColor: #3897f0;
 
 * {
   box-sizing:border-box;
 }
 body {
-  background-color: $bgColor;
-  color: $blackColor;
+  background-color: theme("bgColor");
+  color: theme("blackColor");
   font-size:14px;
   font-family: 'Open Sans', sans-serif !important;
   padding-top: 140px;
 }
 a {
-    color:$blueColor;
+    color: theme("blueColor");
     text-decoration:none;
 }
 input:focus{
     outline:none;
+}
+</style>
+<style scoped lang="scss">
+@import './styles/themes';
+.wrapper {
+    margin: 0 auto;
+    max-width: theme("maxWidth");
+    width: 100%;
 }
 </style>

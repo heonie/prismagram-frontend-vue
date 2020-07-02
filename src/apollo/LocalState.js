@@ -1,5 +1,7 @@
+export const isAuthenticated = () => !!(localStorage.getItem("token"));
+
 export const defaults = {
-    isLoggedIn: !!(localStorage.getItem("token"))
+    isLoggedIn: isAuthenticated()
 };
 
 export const resolvers = {
