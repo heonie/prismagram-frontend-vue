@@ -10,9 +10,6 @@
                 type: String,
                 required: true
             }
-        },
-        method: {
-
         }
     }
 </script>

@@ -1,9 +1,7 @@
 <template>
     <input
-        :placeholder="placeholder"
         :value="value"
-        :type="type"
-        :onChange="onChange"
+        @input="handleInput"
     />
 </template>
 
@@ -11,20 +9,11 @@
     export default {
         name: "Input",
         props: {
-            placeholder: {
-                type: String,
-                required: true
-            },
-            value: {
-                type: String,
-                default: ""
-            },
-            type: {
-                type: String,
-                default: "text"
-            },
-            onChange: {
-                type: Function
+            value: String
+        },
+        methods: {
+            handleInput(event) {
+                this.$emit("input", event.target.value);
             }
         }
     }

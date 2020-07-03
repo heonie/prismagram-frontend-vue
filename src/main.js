@@ -4,7 +4,8 @@ import router from './router'
 import store from './store'
 import VueApollo from 'vue-apollo'
 import apolloClient from "./apollo/Client";
-import VueNotification from "vue-notification";
+import VueToast from 'vue-toast-notification';
+import 'vue-toast-notification/dist/theme-default.css';
 import 'reset-css';
 
 Vue.config.productionTip = false
@@ -14,7 +15,10 @@ const apolloProvider = new VueApollo({
   defaultClient: apolloClient,
 })
 
-Vue.use(VueNotification)
+Vue.use(VueToast, {
+  position: 'bottom-left',
+  duration: 5000
+});
 
 new Vue({
   router,
