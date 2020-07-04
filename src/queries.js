@@ -33,3 +33,41 @@ export const LOCAL_LOG_IN = gql`
         logUserIn(token: $token) @client
     }
 `;
+
+export const ME = gql`
+    {
+        me {
+            username
+        }
+    }
+`;
+
+export const SEE_FEED = gql`
+    {
+        seeFeed {
+            id
+            location
+            caption
+            user {
+                id
+                avatar
+                username
+            }
+            files {
+                id
+                url
+            }
+            likeCount
+            isLiked
+            comments {
+                id
+                text
+                user {
+                    id
+                    username
+                }
+            }
+            createdAt
+        }
+    }
+`;
