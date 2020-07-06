@@ -1,7 +1,7 @@
 <template>
-    <div class="post">]
+    <div class="post">
         <header>
-            <Avatar size="sm" :url="avatar" />
+            <Avatar size="sm" :url="avatar || defaultAvatar" />
             <div class="usercolumn">
                 <router-link :to="`/${username}`">
                     <FatText :text="username" />
@@ -14,16 +14,23 @@
                 v-for="(file, index) in files"
                 class="file"
                 :key="file.id"
-                :src="file.url"
-                :class="{showing: index === this.currentItem}"
-                :style="{backgroundImage: `url(${file.src})`}"
+                :class="{showing: index === currentItem}"
+                :style="{backgroundImage: `url(${file.url})`}"
+                @click="nextFile"
             />
+        </div>
+        <div class="filedots">
+            <div class="filedot"
+                 v-for="(file, index) in files"
+                 :key="file.id"
+                 :class="{active: index === currentItem}"
+            ></div>
         </div>
         <div class="meta">
             <div class="buttons">
-                <Button onClick="toggleLike">
-                    <IconHeartFull v-if="isLiked"/>
-                    <IconHeartEmpty v-if="!isLiked"/>
+                <Button @click="toggleLike">
+                    <IconHeartFull v-if="isLikedRender"/>
+                    <IconHeartEmpty v-if="!isLikedRender"/>
                 </Button>
                 <Button>
                     <IconComment/>
@@ -39,24 +46,26 @@
                     v-for="comment in comments"
                     :key="comment.id"
                 >
-                    <FatText text="comment.user.username" />
-                    {{comment.text}}
+                    <router-link :to="comment.user.username">
+                        <FatText :text="comment.user.username" />
+                    </router-link>{{comment.text}}
                 </li>
                 <li
                     class="comment"
                     v-for="comment in selfComments"
                     :key="comment.id"
                 >
-                    <FatText text="comment.user.username" />
-                    {{comment.text}}
+                    <router-link :to="comment.user.username">
+                        <FatText :text="comment.user.username" />
+                    </router-link>{{comment.text}}
                 </li>
             </ul>
             <span class="timestamp">{{createdAtText}}</span>
             <Textarea
-                :onKeyPress="onKeyPress"
                 placeholder="Add a comment..."
                 v-model="newComment"
             />
+            <Button @click="addComment">Submit</Button>
         </div>
     </div>
 </template>
@@ -69,6 +78,7 @@
     import Avatar from "./Avatar";
     import FatText from "./FatText";
     import moment from "moment";
+    import {TOGGLE_LIKE, ADD_COMMENT} from "../queries";
 
     export default {
         name: "Post",
@@ -81,6 +91,7 @@
             FatText
         },
         props: {
+            id: String,
             user: Object,
             location: String,
             files: Array,
@@ -88,13 +99,18 @@
             likeCount: Number,
             createdAt: String,
             comments: Array,
-            selfComments: Array,
             caption: String
         },
-        data: () => ({
-            newComment: "",
-            currentItem: 0
-        }),
+        data() {
+            return {
+                isLikedRender: this.isLiked || false,
+                likeCountRender: this.likeCount || 0,
+                newComment: "",
+                selfComments: [],
+                currentItem: 0,
+                defaultAvatar: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAADICAMAAACahl6sAAAABlBMVEXJycmcnJyshIZ4AAAB7ElEQVR4nO3bUW7DMAwEUfv+ly4SGEXQ2kksk1xqPXMCvj8BIpeFiIiIiIiIiIiIiIiIiKio9TX1MIOt+6nHOtcBYjbMB8YklC8UM1i+ZjSnnHL0lZxkdKUMMFpSBh3tJMOOXpILjFaUi442ksuOJpIARwtJiKOBJMihl7hAwhxiSaBDKgl1KCUukGCHThIOEUniHRpIgkMjcYGkOBQSIM0kWQ4g3RzVEiBApnPUSoAAAaJzVEqAAAECBAgQIECAzCopdAABAkQoKXUAATKfpNjhA7H5Q+RXtx3EZvPBB2KzHeSzr+WzQWez0+gDsdn79dnE9tmN94HY3I/4XPT43Fj5XL353CEuNpehi8+trs/19GJzz74MSNQDH2fCeGTCeGTCeOah2LJA/OZgICIioq35nygOr9+Phhk0JxCNMQOKhpZhRS/LRUYTSoCigyWMoaWEMnSUcIaGksIQUNIcRjvlhZRkR5UknVFEKXHkS4oY6ZRCR6qk1JEoKXakScodSRKBI0MiYSRQZI5gidARK3GBSB2BErEjTKJmrEESNeKZiyNCohZsuTguS9TjvwSkmeOSRD36n4CoB//X3SHqsXe6N0Q99G53hqhHPghIt1wc5yXqeQ+7K0Q97puAdOueEPWwbwPSLSDd2p34B3GsN/j6gvMWAAAAAElFTkSuQmCC"
+            }
+        },
         computed: {
             username() {
                 return this.user.username
@@ -103,8 +119,8 @@
                 return this.user.avatar
             },
             likeCountText() {
-                return this.likeCount === 1 ?
-                    "1 like" : `${this.likeCount} likes`;
+                return this.likeCountRender === 1 ?
+                    "1 like" : `${this.likeCountRender} likes`;
             },
             createdAtText() {
                 return moment
@@ -115,10 +131,46 @@
         },
         methods: {
             toggleLike() {
-
+                const postId = this.id;
+                this.$apollo.mutate({
+                    // Query
+                    mutation: TOGGLE_LIKE,
+                    variables: {
+                        postId
+                    }
+                }).then((() => {
+                    if(this.isLikedRender) {
+                        this.likeCountRender--;
+                    }
+                    else {
+                        this.likeCountRender++;
+                    }
+                    this.isLikedRender = !this.isLikedRender;
+                }).bind(this)).catch(((ex) => {
+                    this.$toast.error(ex.message);
+                }).bind(this));
             },
-            onKeyPress() {
-
+            addComment(e) {
+                const postId = this.id;
+                const text = this.newComment.trim();
+                this.$apollo.mutate({
+                    // Query
+                    mutation: ADD_COMMENT,
+                    variables: {
+                        postId, text
+                    }
+                }).then(((data) => {
+                    const {
+                        data: { addComment }
+                    } = data;
+                    this.selfComments = [...this.selfComments, addComment];
+                    this.newComment = "";
+                }).bind(this)).catch(((ex) => {
+                    this.$toast.error(ex.message);
+                }).bind(this));
+            },
+            nextFile() {
+                this.currentItem = (this.currentItem+1) % this.files.length;
             }
         }
     }
@@ -176,6 +228,24 @@ header {
 }
 .file.showing {
     opacity: 1;
+}
+
+.filedots {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    height: 20px;
+}
+.filedot {
+    width: 8px;
+    height: 8px;
+    border-radius: 4px;
+    background-color: theme("darkGreyColor");
+    margin: 0 3px;
+}
+.filedot.active {
+    background-color: theme("blueColor");
 }
 
 .meta {

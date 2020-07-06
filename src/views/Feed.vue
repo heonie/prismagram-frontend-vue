@@ -2,21 +2,19 @@
     <div class="feedwrapper">
         <VueHeadful title="Feed | Prismagram" />
         <Loader v-if="loading"/>
-        <div class="posts" v-if="!loading && seeFeed">
-            <Post
-                v-for="post in seeFeed"
-                :key="post.id"
-                :id="post.id"
-                :location="post.location"
-                :caption="post.caption"
-                :user="post.user"
-                :files="post.files"
-                :likeCount="post.likeCount"
-                :isLiked="post.isLiked"
-                :comments="post.comments"
-                :createdAt="post.createdAt"
-            />
-        </div>
+        <Post
+            v-for="post in seeFeed"
+            :key="post.id"
+            :id="post.id"
+            :location="post.location"
+            :caption="post.caption"
+            :user="post.user"
+            :files="post.files"
+            :likeCount="post.likeCount"
+            :isLiked="post.isLiked"
+            :comments="post.comments"
+            :createdAt="post.createdAt"
+        />
     </div>
 </template>
 
@@ -53,5 +51,6 @@
         flex-direction: column;
         align-items: center;
         min-height: 80vh;
+        margin-top: 80px;
     }
 </style>
