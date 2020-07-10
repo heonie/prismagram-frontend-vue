@@ -7,11 +7,10 @@
                 </router-link>
             </div>
             <div class="column">
-                <form onSubmit="onSearchSubmit">
+                <form @submit="onSearchSubmit">
                     <Input
                         class="input"
                         v-model="search"
-                        onChange="onChange"
                         placeholder="Search"
                     />
                 </form>
@@ -57,6 +56,12 @@
         }),
         apollo: {
             me: ME
+        },
+        methods: {
+            onSearchSubmit(e) {
+                e.preventDefault()
+                this.$router.push(`/search?term=${this.search}`);
+            }
         }
     }
 </script>
