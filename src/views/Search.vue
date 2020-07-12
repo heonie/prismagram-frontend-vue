@@ -10,7 +10,7 @@
                 :key="user.id"
                 :username="user.username"
                 :isFollowing="user.isFollowing"
-                :url="user.avater"
+                :url="user.avatar"
                 :isSelf="user.isSelf"
             />
         </div>
@@ -42,8 +42,8 @@
         },
         data: () => ({
             data: {
-                searchUser: [],
-                searchPost: []
+                searchPost: [],
+                searchUser: []
             }
         }),
         computed: {
@@ -58,7 +58,8 @@
                     return {
                         term: this.searchTerm
                     }
-                }
+                },
+                update: data => data    // suppressing "Missing data attribute on result" Error
             }
         }
     }
