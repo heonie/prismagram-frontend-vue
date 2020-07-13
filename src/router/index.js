@@ -4,6 +4,8 @@ import {isAuthenticated} from "../apollo/LocalState";
 import Feed from "../views/Feed";
 import Auth from "../views/Auth";
 import Search from "../views/Search";
+import Explore from "../views/Explore";
+import Profile from "../views/Profile";
 
 Vue.use(VueRouter)
 
@@ -26,9 +28,18 @@ const routes = [
     path: '/search',
     name: 'Search',
     component: Search,
-    props: (route) => ({
-      searchTerm: route.query.term
-    })
+    props: ({query: {term: searchTerm}}) => ({ searchTerm })
+  },
+  {
+    path: '/explore',
+    name: 'Explore',
+    component: Explore
+  },
+  {
+    path: '/:username',
+    name: 'Profile',
+    component: Profile,
+    props: ({params: {username}}) => ({ username })
   }
 ];
 
