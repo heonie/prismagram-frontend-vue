@@ -32,11 +32,12 @@
     import Loader from "../components/Loader";
     import UserCard from "../components/UserCard";
     import FatText from "../components/FatText";
+    import SquarePost from "../components/SquarePost";
     import {SEARCH} from "../queries";
 
     export default {
         name: "Search",
-        components: {UserCard, Loader, FatText},
+        components: {UserCard, Loader, FatText, SquarePost},
         props: {
             searchTerm: String
         },

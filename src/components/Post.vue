@@ -1,7 +1,7 @@
 <template>
     <div class="post">
         <header>
-            <Avatar size="sm" :url="avatar || defaultAvatar" />
+            <Avatar size="sm" :url="avatar" />
             <div class="usercolumn">
                 <router-link :to="`/${username}`">
                     <FatText :text="username" />
@@ -28,13 +28,13 @@
         </div>
         <div class="meta">
             <div class="buttons">
-                <Button @click="toggleLike">
+                <span class="button" @click="toggleLike">
                     <IconHeartFull v-if="isLikedRender"/>
                     <IconHeartEmpty v-if="!isLikedRender"/>
-                </Button>
-                <Button>
+                </span>
+                <span class="button">
                     <IconComment/>
-                </Button>
+                </span>
             </div>
             <FatText :text="likeCountText" />
             <div class="caption">
@@ -77,6 +77,7 @@
     import IconHeartEmpty from "./IconHeartEmpty";
     import Avatar from "./Avatar";
     import FatText from "./FatText";
+    import Button from "./Button";
     import moment from "moment";
     import {TOGGLE_LIKE, ADD_COMMENT} from "../queries";
 
@@ -88,7 +89,8 @@
             IconHeartFull,
             IconHeartEmpty,
             Avatar,
-            FatText
+            FatText,
+            Button
         },
         props: {
             id: String,
@@ -150,7 +152,7 @@
                     this.$toast.error(ex.message);
                 }).bind(this));
             },
-            addComment(e) {
+            addComment() {
                 const postId = this.id;
                 const text = this.newComment.trim();
                 this.$apollo.mutate({
@@ -253,10 +255,13 @@ header {
 }
 
 .buttons {
-    button:first-child {
+    .button:first-child {
         margin-right: 10px;
     }
     margin-bottom: 10px;
+}
+span.button {
+    cursor: pointer;
 }
 
 .timestamp {

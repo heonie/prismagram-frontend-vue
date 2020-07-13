@@ -13,10 +13,14 @@
 
 <script>
     import Avatar from "./Avatar";
+    import FatText from "./FatText";
+    import FollowButton from "./FollowButton";
     export default {
         name: "UserCard",
         components: {
-            Avatar
+            Avatar,
+            FatText,
+            FollowButton
         },
         props: {
             id: {
@@ -32,7 +36,7 @@
                 required: true
             },
             url: {
-                type: String,
+                validator: prop => typeof prop === 'string' || prop === null,
                 required: true
             },
             isSelf: {

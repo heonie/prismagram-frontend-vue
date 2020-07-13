@@ -1,5 +1,8 @@
 <template>
-    <button>{{text}}</button>
+    <button v-bind="$attrs" v-on="$listeners">
+        {{text}}
+        <slot v-if="!text"></slot>
+    </button>
 </template>
 
 <script>
@@ -7,8 +10,7 @@
         name: "Button",
         props: {
             text: {
-                type: String,
-                required: true
+                type: String
             }
         }
     }
