@@ -14,12 +14,7 @@
   import Header from "./components/Header";
   import theme from "./styles/theme";
   import {ThemeProvider} from "vue-styled-components";
-  import gql from 'graphql-tag'
-  const QUERY = gql`
-      {
-          isLoggedIn @client
-      }
-  `;
+  import {IS_LOGGED_IN} from "./queries";
 
   export default {
     name: "App",
@@ -35,7 +30,7 @@
       }
     },
     apollo: {
-      isLoggedIn: QUERY
+      isLoggedIn: IS_LOGGED_IN
     }
   }
 </script>
@@ -65,6 +60,7 @@ input:focus{
 @import './styles/themes';
 .wrapper {
     margin: 0 auto;
+    margin-top: 80px;
     max-width: theme("maxWidth");
     width: 100%;
 }

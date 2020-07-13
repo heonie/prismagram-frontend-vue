@@ -69,7 +69,6 @@
 <style scoped>
     .search {
         height: 50vh;
-        margin-top: 80px;
     }
     .section {
         margin-bottom: 50px;

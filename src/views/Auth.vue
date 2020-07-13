@@ -166,12 +166,12 @@
                                 mutation: LOCAL_LOG_IN,
                                 variables: { token }
                             }).then((() => {
-                                this.$router.push('/');
+                                //setTimeout((() => this.$router.push('/')).bind(this), 1000);
                             }).bind(this));
                         } else {
                             throw Error();
                         }
-                    }).bind(this)).catch(((ex) => {
+                    }).bind(this)).catch((() => {
                         this.$toast.error("Cant confirm secret,check again");
                     }).bind(this));
                 }

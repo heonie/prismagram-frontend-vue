@@ -51,6 +51,5 @@
         flex-direction: column;
         align-items: center;
         min-height: 80vh;
-        margin-top: 80px;
     }
 </style>
