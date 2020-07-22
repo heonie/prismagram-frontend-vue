@@ -1,5 +1,4 @@
 <template>
-  <ThemeProvider :theme="theme">
     <div id="app">
         <Header v-if="isLoggedIn"></Header>
         <div class="wrapper">
@@ -7,25 +6,20 @@
             <Footer></Footer>
         </div>
     </div>
-  </ThemeProvider>
 </template>
 <script>
   import Footer from "./components/Footer";
   import Header from "./components/Header";
-  import theme from "./styles/theme";
-  import {ThemeProvider} from "vue-styled-components";
   import {IS_LOGGED_IN} from "./queries";
 
   export default {
     name: "App",
     components: {
-      ThemeProvider,
       Footer,
       Header
     },
     data() {
       return {
-        theme,
         isLoggedIn: false
       }
     },
